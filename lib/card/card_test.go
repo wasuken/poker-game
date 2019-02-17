@@ -56,3 +56,33 @@ func TestLessSuccess(t *testing.T) {
 		t.Fatal("error")
 	}
 }
+
+// ここから役チェックテスト
+func TestIsOnePairSuccess(t *testing.T) {
+	var cards Cards
+	cards = createDeck()[0:5]
+	if !cards.IsOnePair() {
+		t.Fatal("error. this is not one pair")
+	}
+}
+func TestIsTwoPairSuccess(t *testing.T) {
+	var cards Cards
+	cards = createDeck()[0:5]
+	if !cards.IsTwoPair() {
+		t.Fatal("error. this is not two pair")
+	}
+}
+func TestIsThreePairSuccess(t *testing.T) {
+	var cards Cards
+	cards = createDeck()[0:5]
+	if !cards.IsThreePair() {
+		t.Fatal("error. this is not three pair")
+	}
+}
+func TestIsFourPairSuccess(t *testing.T) {
+	var cards Cards
+	cards = createDeck()[0:5]
+	if !cards.IsFourPair() {
+		t.Fatal("error. this is not four pair")
+	}
+}

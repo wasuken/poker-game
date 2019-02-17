@@ -3,6 +3,7 @@ package main
 import (
 	"./lib/card"
 	"fmt"
+	"sort"
 )
 
 /*
@@ -18,7 +19,8 @@ func main() {
 			cards = append(cards, card)
 		}
 	}
-	your_hand := card.Shuffle(cards)[0:5]
+	// your_hand := cards.Shuffle()[0:5]
+	your_hand := cards[0:5]
 	for _, c := range your_hand {
 		fmt.Printf("suit:%s\tnumber:%v\n", c.Suit.SuitText, c.Number)
 	}

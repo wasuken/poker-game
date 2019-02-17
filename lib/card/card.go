@@ -3,6 +3,7 @@ package card
 import (
 	"fmt"
 	"math/rand"
+	"sort"
 	"time"
 )
 
@@ -60,4 +61,71 @@ func (cards Cards) Insert(pos int, value *Card) Cards {
 	array := append(cards[:pos+1], cards[pos:]...)
 	array[pos] = value
 	return array
+}
+
+func (cards Cards) IsOnePair() bool {
+	sort.SliceStable(cards, func(i, j int) bool { return cards[i].Suit.SuitInt < cards[j].Suit.SuitInt })
+	for i, card_i := range cards {
+		for _, card_j := range cards[i+1:] {
+			if card_i.Number == card_j.Number {
+				return true
+			}
+		}
+	}
+	return false
+}
+func (cards Cards) IsTwoPair() bool {
+	sort.SliceStable(cards, func(i, j int) bool { return cards[i].Suit.SuitInt < cards[j].Suit.SuitInt })
+	for i, card_i := range cards {
+		for j, card_j := range cards[i+1:] {
+			if card_i.Number == card_j.Number {
+				removed_cards := append(cards[:i], cards[i+1:]...)
+				removed_cards = append(removed_cards[:j], removed_cards[j+1:]...)
+				return removed_cards.IsOnePair()
+			}
+		}
+	}
+	return false
+}
+func (cards Cards) IsThreePair() bool {
+	sort.SliceStable(cards, func(i, j int) bool { return cards[i].Suit.SuitInt < cards[j].Suit.SuitInt })
+	for i, card_i := range cards {
+		cnt := 1
+		for _, card_j := range cards[i+1:] {
+			if card_i.Number == card_j.Number {
+				cnt++
+			}
+			if cnt >= 3 {
+				return true
+			}
+		}
+	}
+	return false
+}
+func (cards Cards) IsStraight() bool {
+	return false
+}
+func (cards Cards) IsFrush() bool {
+	return false
+}
+func (cards Cards) IsStraightFlush() bool {
+	return false
+}
+func (cards Cards) IsFullHouse() bool {
+	return false
+}
+func (cards Cards) IsFourPair() bool {
+	sort.SliceStable(cards, func(i, j int) bool { return cards[i].Suit.SuitInt < cards[j].Suit.SuitInt })
+	for i, card_i := range cards {
+		cnt := 1
+		for _, card_j := range cards[i+1:] {
+			if card_i.Number == card_j.Number {
+				cnt++
+			}
+			if cnt >= 4 {
+				return true
+			}
+		}
+	}
+	return false
 }
