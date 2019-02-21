@@ -87,7 +87,7 @@ func (cards Cards) IsTwoPair() bool {
 	}
 	return false
 }
-func (cards Cards) IsThreePair() bool {
+func (cards Cards) IsThreeCard() bool {
 	sort.SliceStable(cards, func(i, j int) bool { return cards[i].Suit.SuitInt < cards[j].Suit.SuitInt })
 	for i, card_i := range cards {
 		cnt := 1
@@ -102,19 +102,33 @@ func (cards Cards) IsThreePair() bool {
 	}
 	return false
 }
+
+// TODO: 13,1,2,3,4みたいな奴は現時点では非サポートなので後ほどサポートするようにする。
 func (cards Cards) IsStraight() bool {
-	return false
+	sort.SliceStable(cards, func(i, j int) bool { return cards[i].Suit.SuitInt < cards[j].Suit.SuitInt })
+	for i := 0; i < len(cards)-1; i++ {
+		if cards[i].Number+1 != cards[i+1].Number {
+			return false
+		}
+	}
+	return true
 }
 func (cards Cards) IsFrush() bool {
-	return false
+	firstCard := cards[0]
+	for _, card := range cards[1:] {
+		if firstCard.Suit.SuitInt != card.Suit.SuitInt {
+			return false
+		}
+	}
+	return true
 }
 func (cards Cards) IsStraightFlush() bool {
-	return false
+	return cards.IsFrush() && cards.IsStraight()
 }
 func (cards Cards) IsFullHouse() bool {
-	return false
+	return cards.IsTwoPair() && cards.IsThreeCard()
 }
-func (cards Cards) IsFourPair() bool {
+func (cards Cards) IsFourCard() bool {
 	sort.SliceStable(cards, func(i, j int) bool { return cards[i].Suit.SuitInt < cards[j].Suit.SuitInt })
 	for i, card_i := range cards {
 		cnt := 1
@@ -128,4 +142,9 @@ func (cards Cards) IsFourPair() bool {
 		}
 	}
 	return false
+}
+
+// 役文字列を返す。
+func (cards Cards) IsPokerHand() string {
+	return "none"
 }

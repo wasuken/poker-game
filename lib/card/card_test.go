@@ -1,6 +1,7 @@
 package card
 
 import (
+	"sort"
 	"testing"
 )
 
@@ -72,17 +73,57 @@ func TestIsTwoPairSuccess(t *testing.T) {
 		t.Fatal("error. this is not two pair")
 	}
 }
-func TestIsThreePairSuccess(t *testing.T) {
+func TestIsThreeCardSuccess(t *testing.T) {
 	var cards Cards
 	cards = createDeck()[0:5]
-	if !cards.IsThreePair() {
-		t.Fatal("error. this is not three pair")
+	if !cards.IsThreeCard() {
+		t.Fatal("error. this is not three card")
 	}
 }
-func TestIsFourPairSuccess(t *testing.T) {
+func TestIsFourCardSuccess(t *testing.T) {
 	var cards Cards
 	cards = createDeck()[0:5]
-	if !cards.IsFourPair() {
-		t.Fatal("error. this is not four pair")
+	if !cards.IsFourCard() {
+		t.Fatal("error. this is not four card")
 	}
 }
+func TestIsFlushSuccess(t *testing.T) {
+	var cards Cards
+	cards = createDeck()
+	sort.SliceStable(cards, func(i, j int) bool { return cards[i].Suit.SuitInt < cards[j].Suit.SuitInt })
+	cards = cards[0:5]
+	if !cards.IsFrush() {
+		t.Fatal("error. this is not flush")
+	}
+}
+func TestIsStraightSuccess(t *testing.T) {
+	var cards Cards
+	cards = createDeck()
+	sort.SliceStable(cards, func(i, j int) bool {
+		return cards[i].Suit.SuitInt < cards[j].Suit.SuitInt
+	})
+	cards = cards[0:5]
+	if !cards.IsStraight() {
+		t.Fatal("error. this is not straight")
+	}
+
+}
+func TestIsStraintFlushSuccess(t *testing.T) {
+	var cards Cards
+	cards = createDeck()
+	sort.SliceStable(cards, func(i, j int) bool {
+		return cards[i].Suit.SuitInt < cards[j].Suit.SuitInt
+	})
+	cards = cards[0:5]
+	if !cards.IsStraight() {
+		t.Fatal("error. this is not straight")
+	}
+}
+
+// func TestIsPokerHandSuccess(t *testing.T) {
+// 	var cards Cards = createDeck()[:5]
+// 	if cards.IsPokerHand() == "four card" {
+
+// 	}
+// 	t.Fatal("error")
+// }
