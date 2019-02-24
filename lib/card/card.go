@@ -37,7 +37,10 @@ func (cards Cards) Len() int {
 }
 
 func (cards Cards) Swap(i, j int) {
-	cards[i], cards[j] = cards[j], cards[i]
+	if i == j {
+		return
+	}
+	*cards[i], *cards[j] = *cards[j], *cards[i]
 }
 
 func (cards Cards) Less(i, j int) bool {
@@ -47,17 +50,15 @@ func (cards Cards) Less(i, j int) bool {
 type Cards []*Card
 
 func (cards Cards) Shuffle() Cards {
-	// var result Cards
+	var result Cards
+	result = make([]*Card, len(cards))
+	copy(result, cards)
 	rand.Seed(time.Now().UnixNano())
-	for i := len(cards) - 1; i >= 0; i-- {
-		j := rand.Intn(i + 1)
-		cards[i], cards[j] = cards[j], cards[i]
-	}
 	for i := 0; i < cards.Len(); i++ {
 		rand.Seed(time.Now().UnixNano() + int64(i))
-		cards.Swap(i, rand.Intn(cards.Len()*2344%cards.Len()+1))
+		result.Swap(i, rand.Intn(cards.Len()))
 	}
-	return cards
+	return result
 }
 func (cards Cards) Insert(pos int, value *Card) Cards {
 	if len(cards) <= pos {

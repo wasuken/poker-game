@@ -19,8 +19,12 @@ func main() {
 			cards = append(cards, card)
 		}
 	}
+	// for _, c := range cards {
+	// 	fmt.Printf("suit:%s\tnumber:%v\n", c.Suit.SuitText, c.Number)
+	// }
+	// fmt.Println("===========================================")
 	var your_hand card.Cards
-	your_hand = cards.Shuffle().Shuffle()
+	your_hand = cards.Shuffle()
 	fmt.Println(your_hand[0:5].IsPokerHand())
 	// for _, c := range your_hand {
 	// 	fmt.Printf("suit:%s\tnumber:%v\n", c.Suit.SuitText, c.Number)
