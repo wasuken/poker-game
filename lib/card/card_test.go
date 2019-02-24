@@ -24,7 +24,7 @@ func TestInsertSuccess(t *testing.T) {
 	card.Number = 10
 	card.Suit.SetSuit(3)
 	cards.Insert(0, card)
-	if cards[0].Number != 10 || card.Suit.SuitText != "diamond" {
+	if cards[0].Number != 10 || cards[0].Suit.SuitText != "diamond" {
 		t.Fatal("error")
 	}
 }

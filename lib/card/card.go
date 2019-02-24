@@ -47,12 +47,17 @@ func (cards Cards) Less(i, j int) bool {
 type Cards []*Card
 
 func (cards Cards) Shuffle() Cards {
+	// var result Cards
 	rand.Seed(time.Now().UnixNano())
-	var result Cards
-	for i := 0; i < cards.Len(); i++ {
-		result = result.Insert(rand.Intn(cards.Len()), cards[i])
+	for i := len(cards) - 1; i >= 0; i-- {
+		j := rand.Intn(i + 1)
+		cards[i], cards[j] = cards[j], cards[i]
 	}
-	return result
+	for i := 0; i < cards.Len(); i++ {
+		rand.Seed(time.Now().UnixNano() + int64(i))
+		cards.Swap(i, rand.Intn(cards.Len()*2344%cards.Len()+1))
+	}
+	return cards
 }
 func (cards Cards) Insert(pos int, value *Card) Cards {
 	if len(cards) <= pos {
@@ -122,11 +127,8 @@ func (cards Cards) IsFrush() bool {
 	}
 	return true
 }
-func (cards Cards) IsStraightFlush() bool {
-	return cards.IsFrush() && cards.IsStraight()
-}
 func (cards Cards) IsFullHouse() bool {
-	return cards.IsTwoPair() && cards.IsThreeCard()
+	return !cards.IsFourCard() && cards.IsTwoPair() && cards.IsThreeCard()
 }
 func (cards Cards) IsFourCard() bool {
 	sort.SliceStable(cards, func(i, j int) bool { return cards[i].Suit.SuitInt < cards[j].Suit.SuitInt })
@@ -143,8 +145,28 @@ func (cards Cards) IsFourCard() bool {
 	}
 	return false
 }
+func (cards Cards) IsStraightFlush() bool {
+	return cards.IsFrush() && cards.IsStraight()
+}
 
 // 役文字列を返す。
 func (cards Cards) IsPokerHand() string {
+	if cards.IsStraightFlush() {
+		return "straight flush"
+	} else if cards.IsFourCard() {
+		return "four card"
+	} else if cards.IsFullHouse() {
+		return "fullhouse"
+	} else if cards.IsFrush() {
+		return "flush"
+	} else if cards.IsStraight() {
+		return "straihght"
+	} else if cards.IsThreeCard() {
+		return "three card"
+	} else if cards.IsTwoPair() {
+		return "two pair"
+	} else if cards.IsOnePair() {
+		return "one pair"
+	}
 	return "none"
 }

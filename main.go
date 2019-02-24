@@ -3,7 +3,7 @@ package main
 import (
 	"./lib/card"
 	"fmt"
-	"sort"
+	// "sort"
 )
 
 /*
@@ -19,8 +19,12 @@ func main() {
 			cards = append(cards, card)
 		}
 	}
-	// your_hand := cards.Shuffle()[0:5]
-	your_hand := cards[0:5]
+	var your_hand card.Cards
+	your_hand = cards.Shuffle().Shuffle()
+	fmt.Println(your_hand[0:5].IsPokerHand())
+	// for _, c := range your_hand {
+	// 	fmt.Printf("suit:%s\tnumber:%v\n", c.Suit.SuitText, c.Number)
+	// }
 	for _, c := range your_hand {
 		fmt.Printf("suit:%s\tnumber:%v\n", c.Suit.SuitText, c.Number)
 	}
